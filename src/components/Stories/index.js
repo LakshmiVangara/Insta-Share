@@ -1,17 +1,17 @@
-import Cookies from 'js-cookie'
-import {Component} from 'react'
-import Slider from 'react-slick'
-import Loader from 'react-loader-spinner'
+import { Component } from 'react';
+import Cookies from 'js-cookie';
+import Slider from 'react-slick';
+import { TailSpin } from 'react-loader-spinner'; // Updated import
 
-import './index.css'
-import SearchContext from '../../SearchContext'
+import './index.css';
+import SearchContext from '../../SearchContext';
 
 const apiStatusUpdate = {
   initial: 'INITIAL',
   success: 'SUCCESS',
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
-}
+};
 
 const settings = {
   dots: false,
@@ -42,54 +42,53 @@ const settings = {
       },
     },
   ],
-}
+};
 
 class Stories extends Component {
-  state = {storiesList: [], apiStatus: apiStatusUpdate.initial}
+  state = { storiesList: [], apiStatus: apiStatusUpdate.initial };
 
   componentDidMount() {
-    this.getStories()
+    this.getStories();
   }
 
   getStories = async () => {
-    this.setState({apiStatus: apiStatusUpdate.inProgress})
-    const token = Cookies.get('jwt_token')
-    const url = 'https://apis.ccbp.in/insta-share/stories'
+    this.setState({ apiStatus: apiStatusUpdate.inProgress });
+    const token = Cookies.get('jwt_token');
+    const url = 'https://apis.ccbp.in/insta-share/stories';
     const options = {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
-    const response = await fetch(url, options)
+    };
+    const response = await fetch(url, options);
     if (response.ok) {
-      const data = await response.json()
+      const data = await response.json();
       const updataStories = data.users_stories.map(each => ({
         userId: each.user_id,
         username: each.user_name,
         storyUrl: each.story_url,
-      }))
+      }));
       this.setState({
         storiesList: updataStories,
         apiStatus: apiStatusUpdate.success,
-      })
+      });
     } else {
-      this.setState({apiStatus: apiStatusUpdate.failure})
+      this.setState({ apiStatus: apiStatusUpdate.failure });
     }
-  }
+  };
 
   renderLoadingView = () => (
-    // eslint-disable-next-line react/no-unknown-property
     <div className="loader" testid="loader">
-      <Loader type="TailSpin" color="#4094EF" height={50} width={50} />
+      <TailSpin color="#4094EF" height={50} width={50} />
     </div>
-  )
+  );
 
   renderFailureView = () => (
     <SearchContext.Consumer>
       {value => {
-        const {isDark} = value
-        const failure = isDark ? 'failure-desc failure-desc2' : 'failure-desc'
+        const { isDark } = value;
+        const failure = isDark ? 'failure-desc failure-desc2' : 'failure-desc';
         return (
           <div className="failure-view">
             <img
@@ -106,29 +105,29 @@ class Stories extends Component {
               Try again
             </button>
           </div>
-        )
+        );
       }}
     </SearchContext.Consumer>
-  )
+  );
 
   onRetry = () => {
-    this.setState({apiStatus: apiStatusUpdate.inProgress}, this.getStories)
-  }
+    this.setState({ apiStatus: apiStatusUpdate.inProgress }, this.getStories);
+  };
 
   renderStoriesView = () => {
-    const {storiesList} = this.state
+    const { storiesList } = this.state;
     return (
       <SearchContext.Consumer>
         {value => {
-          const {isDark} = value
-          const storyName = isDark ? 'story-name story-name2' : 'story-name'
+          const { isDark } = value;
+          const storyName = isDark ? 'story-name story-name2' : 'story-name';
 
           return (
             <div className="stories-list-containers">
               <div className="slick-container">
                 <Slider {...settings}>
                   {storiesList.map(each => {
-                    const {userId, username, storyUrl} = each
+                    const { userId, username, storyUrl } = each;
                     return (
                       <div className="slick-item" key={userId}>
                         <div className="circles">
@@ -140,34 +139,35 @@ class Stories extends Component {
                         </div>
                         <p className={storyName}>{username}</p>
                       </div>
-                    )
+                    );
                   })}
                 </Slider>
               </div>
             </div>
-          )
+          );
         }}
       </SearchContext.Consumer>
-    )
-  }
+    );
+  };
 
   renderApiStatus = () => {
-    const {apiStatus} = this.state
+    const { apiStatus } = this.state;
 
     switch (apiStatus) {
       case apiStatusUpdate.success:
-        return this.renderStoriesView()
+        return this.renderStoriesView();
       case apiStatusUpdate.failure:
-        return this.renderFailureView()
+        return this.renderFailureView();
       case apiStatusUpdate.inProgress:
-        return this.renderLoadingView()
+        return this.renderLoadingView();
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   render() {
-    return this.renderApiStatus()
+    return this.renderApiStatus();
   }
 }
-export default Stories
+
+export default Stories;

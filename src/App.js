@@ -1,36 +1,36 @@
-import {Route, Switch, Redirect} from 'react-router-dom'
-import {Component} from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Component } from 'react';
 
-import './App.css'
-import NotFound from './components/NotFound'
-import LoginPage from './components/LoginPage'
-import Home from './components/Home'
-import Profile from './components/Profile'
-import ProtectedRoute from './components/ProtectedRoute'
-import SearchContext from './SearchContext'
-import UserProfile from './components/UserProfile'
+import './App.css';
+import NotFound from './components/NotFound';
+import LoginPage from './components/LoginPage';
+import Home from './components/Home';
+import Profile from './components/Profile';
+import ProtectedRoute from './components/ProtectedRoute'; // Ensure this is updated for v6+
+import SearchContext from './SearchContext';
+import UserProfile from './components/UserProfile';
 
 class App extends Component {
-  state = {isDark: false, searchInput: '', searchPostView: false}
+  state = { isDark: false, searchInput: '', searchPostView: false };
 
   onChangeTheme = () => {
-    this.setState(prev => ({isDark: !prev.isDark}))
-  }
+    this.setState((prev) => ({ isDark: !prev.isDark }));
+  };
 
   clickButton = () => {
-    this.setState(prev => ({searchPostView: !prev.searchPostView}))
-  }
+    this.setState((prev) => ({ searchPostView: !prev.searchPostView }));
+  };
 
   onEnterSearch = () => {
-    this.setState(prev => ({searchPostView: !prev.searchPostView}))
-  }
+    this.setState((prev) => ({ searchPostView: !prev.searchPostView }));
+  };
 
-  changeSearch = result => {
-    this.setState({searchInput: result})
-  }
+  changeSearch = (result) => {
+    this.setState({ searchInput: result });
+  };
 
   render() {
-    const {isDark, searchInput, searchPostView} = this.state
+    const { isDark, searchInput, searchPostView } = this.state;
     return (
       <SearchContext.Provider
         value={{
@@ -43,16 +43,26 @@ class App extends Component {
           changeTheme: this.onChangeTheme,
         }}
       >
-        <Switch>
-          <Route exact path="/login" component={LoginPage} />
-          <ProtectedRoute exact path="/" component={Home} />
-          <ProtectedRoute exact path="/my-profile" component={Profile} />
-          <ProtectedRoute exact path="/users/:userId" component={UserProfile} />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect to="/not-found" />
-        </Switch>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/"
+            element={<ProtectedRoute><Home /></ProtectedRoute>}
+          />
+          <Route
+            path="/my-profile"
+            element={<ProtectedRoute><Profile /></ProtectedRoute>}
+          />
+          <Route
+            path="/users/:userId"
+            element={<ProtectedRoute><UserProfile /></ProtectedRoute>}
+          />
+          <Route path="/not-found" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/not-found" />} />
+        </Routes>
       </SearchContext.Provider>
-    )
+    );
   }
 }
-export default App
+
+export default App;

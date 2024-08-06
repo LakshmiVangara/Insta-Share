@@ -1,44 +1,44 @@
-import {Component} from 'react'
-import Cookies from 'js-cookie'
-import Loader from 'react-loader-spinner'
+import {Component} from 'react';
+import Cookies from 'js-cookie';
+import { TailSpin } from 'react-loader-spinner'; // Updated import
 
-import PostLists from '../PostLists'
-import SearchContext from '../../SearchContext'
+import PostLists from '../PostLists';
+import SearchContext from '../../SearchContext';
 
-import './index.css'
+import './index.css';
 
 const apiStatusUpdate = {
   initial: 'INITIAL',
   success: 'SUCCESS',
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
-  empty: 'Empty',
-}
+  empty: 'EMPTY',
+};
 
 class SearchPosts extends Component {
-  state = {searchPosts: [], apiStatus: apiStatusUpdate.initial}
+  state = {searchPosts: [], apiStatus: apiStatusUpdate.initial};
 
   componentDidMount() {
-    this.getSearchData()
+    this.getSearchData();
   }
 
   getSearchData = async () => {
-    this.setState({apiStatus: apiStatusUpdate.inProgress})
-    const {search} = this.props
-    console.log(search)
-    const token = Cookies.get('jwt_token')
-    const url = `https://apis.ccbp.in/insta-share/posts?search=${search}`
+    this.setState({apiStatus: apiStatusUpdate.inProgress});
+    const {search} = this.props;
+    console.log(search);
+    const token = Cookies.get('jwt_token');
+    const url = `https://apis.ccbp.in/insta-share/posts?search=${search}`;
     const options = {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
-    const response = await fetch(url, options)
+    };
+    const response = await fetch(url, options);
     if (response.ok) {
-      const data = await response.json()
+      const data = await response.json();
       if (data.posts.length === 0) {
-        this.setState({apiStatus: apiStatusUpdate.empty})
+        this.setState({apiStatus: apiStatusUpdate.empty});
       } else {
         const updatePosts = data.posts.map(each => ({
           postId: each.post_id,
@@ -54,30 +54,28 @@ class SearchPosts extends Component {
             comment: eachComment.comment,
           })),
           createdAt: each.created_at,
-        }))
-        // console.log(updatePosts)
+        }));
         this.setState({
           searchPosts: updatePosts,
           apiStatus: apiStatusUpdate.success,
-        })
+        });
       }
     } else {
-      this.setState({apiStatus: apiStatusUpdate.failure})
+      this.setState({apiStatus: apiStatusUpdate.failure});
     }
-  }
+  };
 
   renderLoadingView = () => (
-    // eslint-disable-next-line react/no-unknown-property
     <div className="loader-container" testid="loader">
-      <Loader type="TailSpin" color="#4094EF" height={50} width={50} />
+      <TailSpin color="#4094EF" height={50} width={50} />
     </div>
-  )
+  );
 
   renderFailureView = () => (
     <SearchContext.Consumer>
       {value => {
-        const {isDark} = value
-        const failure = isDark ? 'failure-desc failure-desc2' : 'failure-desc'
+        const {isDark} = value;
+        const failure = isDark ? 'failure-desc failure-desc2' : 'failure-desc';
         return (
           <div className="failure-view">
             <img
@@ -94,19 +92,19 @@ class SearchPosts extends Component {
               Try again
             </button>
           </div>
-        )
+        );
       }}
     </SearchContext.Consumer>
-  )
+  );
 
   renderEmptyView = () => (
     <SearchContext.Consumer>
       {value => {
-        const {isDark} = value
-        const failure = isDark ? 'failure-desc failure-desc2' : 'failure-desc'
+        const {isDark} = value;
+        const failure = isDark ? 'failure-desc failure-desc2' : 'failure-desc';
         const notFound = isDark
           ? 'not-found-heading texts2'
-          : 'not-found-heading texts'
+          : 'not-found-heading texts';
         return (
           <div className="failure-view">
             <img
@@ -117,27 +115,27 @@ class SearchPosts extends Component {
             <h1 className={notFound}>Search Not Found</h1>
             <p className={failure}>Try different keyword or search again</p>
           </div>
-        )
+        );
       }}
     </SearchContext.Consumer>
-  )
+  );
 
   onRetry = () => {
-    this.setState({apiStatus: apiStatusUpdate.inProgress}, this.getSearchData)
-  }
+    this.setState({apiStatus: apiStatusUpdate.inProgress}, this.getSearchData);
+  };
 
   onLikeButton = async postId => {
-    const token = Cookies.get('jwt_token')
-    const post = {like_status: true}
-    const url = `https://apis.ccbp.in/insta-share/posts/${postId}/like`
+    const token = Cookies.get('jwt_token');
+    const post = {like_status: true};
+    const url = `https://apis.ccbp.in/insta-share/posts/${postId}/like`;
     const options = {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
-    }
-    await fetch(url, options)
+    };
+    await fetch(url, options);
     this.setState(prev => ({
       searchPosts: prev.searchPosts.map(each => {
         if (each.postId === postId) {
@@ -145,25 +143,25 @@ class SearchPosts extends Component {
             ...each,
             likesCount: each.likesCount + 1,
             likeStatus: !each.likeStatus,
-          }
+          };
         }
-        return each
+        return each;
       }),
-    }))
-  }
+    }));
+  };
 
   onUnlikeButton = async postId => {
-    const token = Cookies.get('jwt_token')
-    const post = {like_status: false}
-    const url = `https://apis.ccbp.in/insta-share/posts/${postId}/like`
+    const token = Cookies.get('jwt_token');
+    const post = {like_status: false};
+    const url = `https://apis.ccbp.in/insta-share/posts/${postId}/like`;
     const options = {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
-    }
-    await fetch(url, options)
+    };
+    await fetch(url, options);
     this.setState(prev => ({
       searchPosts: prev.searchPosts.map(each => {
         if (each.postId === postId) {
@@ -171,17 +169,17 @@ class SearchPosts extends Component {
             ...each,
             likesCount: each.likesCount - 1,
             likeStatus: !each.likeStatus,
-          }
+          };
         }
-        return each
+        return each;
       }),
-    }))
-  }
+    }));
+  };
 
   renderSearchData = () => {
-    const {searchPosts} = this.state
-    const {theme} = this.props
-    const postHead = theme ? 'content texts2' : 'content texts'
+    const {searchPosts} = this.state;
+    const {theme} = this.props;
+    const postHead = theme ? 'content texts2' : 'content texts';
 
     return (
       <SearchContext.Provider
@@ -199,28 +197,29 @@ class SearchPosts extends Component {
           </ul>
         </div>
       </SearchContext.Provider>
-    )
-  }
+    );
+  };
 
   renderApiStatus = () => {
-    const {apiStatus} = this.state
+    const {apiStatus} = this.state;
 
     switch (apiStatus) {
       case apiStatusUpdate.success:
-        return this.renderSearchData()
+        return this.renderSearchData();
       case apiStatusUpdate.failure:
-        return this.renderFailureView()
+        return this.renderFailureView();
       case apiStatusUpdate.inProgress:
-        return this.renderLoadingView()
+        return this.renderLoadingView();
       case apiStatusUpdate.empty:
-        return this.renderEmptyView()
+        return this.renderEmptyView();
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   render() {
-    return this.renderApiStatus()
+    return this.renderApiStatus();
   }
 }
-export default SearchPosts
+
+export default SearchPosts;
