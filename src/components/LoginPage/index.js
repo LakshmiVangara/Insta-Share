@@ -1,50 +1,50 @@
-import React, { useState } from 'react'
-import { useNavigate, Navigate } from 'react-router-dom'
-import Cookies from 'js-cookie'
-import './index.css'
+import React, { useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import './index.css';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [isCredential, setIsCredential] = useState(false)
-  const [errorMsg, setErrorMsg] = useState('')
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isCredential, setIsCredential] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const navigate = useNavigate()
-  const token = Cookies.get('jwt_token')
+  const navigate = useNavigate();
+  const token = Cookies.get('jwt_token');
 
   const onSubmitForm = async event => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const userDetails = { username, password }
-    const loginApi = 'https://apis.ccbp.in/login'
+    const userDetails = { username, password };
+    const loginApi = 'https://apis.ccbp.in/login';
 
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
-    }
+    };
 
-    const response = await fetch(loginApi, options)
-    const data = await response.json()
+    const response = await fetch(loginApi, options);
+    const data = await response.json();
 
     if (response.ok) {
-      loginSuccess(data.jwt_token)
+      loginSuccess(data.jwt_token);
     } else {
-      loginFailure(data.error_msg)
+      loginFailure(data.error_msg);
     }
-  }
+  };
 
   const loginSuccess = jwtToken => {
-    Cookies.set('jwt_token', jwtToken, { expires: 30, path: '/' })
-    navigate('/')
-  }
+    Cookies.set('jwt_token', jwtToken, { expires: 30, path: '/' });
+    navigate('/');
+  };
 
   const loginFailure = error => {
-    setIsCredential(true)
-    setErrorMsg(error)
-  }
+    setIsCredential(true);
+    setErrorMsg(error);
+  };
 
   if (token !== undefined) {
-    return <Navigate to="/" />
+    return <Navigate to="/" />;
   }
 
   return (
@@ -95,7 +95,7 @@ const LoginPage = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

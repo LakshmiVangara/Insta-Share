@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const SearchContext = React.createContext({
   searchInput: '',
@@ -10,5 +10,5 @@ const SearchContext = React.createContext({
   unlikeIcon: () => {},
   isDark: false,
   changeTheme: () => {},
-})
-export default SearchContext
+});
+export default SearchContext;
