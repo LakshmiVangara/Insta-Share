@@ -1,18 +1,18 @@
-import {Link} from 'react-router-dom';
-import {BsHeart} from 'react-icons/bs';
-import {BiShareAlt} from 'react-icons/bi';
-import {FaRegComment} from 'react-icons/fa';
-import {FcLike} from 'react-icons/fc';
+import {Link} from 'react-router-dom'
+import {BsHeart} from 'react-icons/bs'
+import {BiShareAlt} from 'react-icons/bi'
+import {FaRegComment} from 'react-icons/fa'
+import {FcLike} from 'react-icons/fc'
 
-import './index.css';
-import SearchContext from '../../SearchContext';
+import './index.css'
+import SearchContext from '../../SearchContext'
 
 const PostLists = props => {
-  const {posts, theme} = props;
+  const {posts, theme} = props
   return (
     <SearchContext.Consumer>
       {value => {
-        const {likeIcon, unlikeIcon} = value;
+        const {likeIcon, unlikeIcon} = value
         const {
           postId,
           userId,
@@ -24,22 +24,22 @@ const PostLists = props => {
           likesCount,
           comments,
           createdAt,
-        } = posts;
+        } = posts
 
         const likeButton = () => {
-          likeIcon(postId);
-        };
+          likeIcon(postId)
+        }
 
         const unlikeButton = () => {
-          unlikeIcon(postId);
-        };
+          unlikeIcon(postId)
+        }
 
-        const postItemsList = theme ? 'post-items-lists3' : 'post-items-list1';
-        const profileName = theme ? 'profile-name texts2' : 'profile-name texts';
-        const likes = theme ? 'likes texts2' : 'likes texts';
-        const captions = theme ? 'caption texts2' : 'caption texts';
-        const userComment = theme ? 'user-comment texts2' : 'user-comment texts';
-        const sub = theme ? 'user-comment texts2 sub' : 'user-comment texts sub';
+        const postItemsList = theme ? 'post-items-lists3' : 'post-items-list1'
+        const profileName = theme ? 'profile-name texts2' : 'profile-name texts'
+        const likes = theme ? 'likes texts2' : 'likes texts'
+        const captions = theme ? 'caption texts2' : 'caption texts'
+        const userComment = theme ? 'user-comment texts2' : 'user-comment texts'
+        const sub = theme ? 'user-comment texts2 sub' : 'user-comment texts sub'
 
         return (
           <li className={postItemsList}>
@@ -101,9 +101,9 @@ const PostLists = props => {
               <p className="created">{createdAt}</p>
             </div>
           </li>
-        );
+        )
       }}
     </SearchContext.Consumer>
-  );
-};
-export default PostLists;
+  )
+}
+export default PostLists
