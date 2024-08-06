@@ -1,10 +1,10 @@
-import {BiCamera} from 'react-icons/bi';
-import SearchContext from '../../SearchContext';
+import {BiCamera} from 'react-icons/bi'
+import SearchContext from '../../SearchContext'
 
-import './index.css';
+import './index.css'
 
 const UserPosts = props => {
-  const {posts, my} = props;
+  const {posts, my} = props
 
   const postView = () => (
     <ul className="user-posts-container">
@@ -18,16 +18,16 @@ const UserPosts = props => {
         </li>
       ))}
     </ul>
-  );
+  )
 
   const noPosts = () => (
     <SearchContext.Consumer>
       {value => {
-        const {isDark} = value;
+        const {isDark} = value
 
-        const cam = isDark ? 'cam2' : 'cam';
-        const noPostImage = isDark ? 'no-post-image2' : 'no-post-image';
-        const noPost = isDark ? 'no-post2' : 'no-post';
+        const cam = isDark ? 'cam2' : 'cam'
+        const noPostImage = isDark ? 'no-post-image2' : 'no-post-image'
+        const noPost = isDark ? 'no-post2' : 'no-post'
 
         return (
           <div className="no-posts-container">
@@ -36,18 +36,18 @@ const UserPosts = props => {
             </div>
             <h1 className={noPost}>No Posts</h1>
           </div>
-        );
+        )
       }}
     </SearchContext.Consumer>
-  );
+  )
 
   const getPosts = () => {
     if (posts.length === 0) {
-      return noPosts();
+      return noPosts()
     }
-    return postView();
-  };
+    return postView()
+  }
 
-  return getPosts();
-};
-export default UserPosts;
+  return getPosts()
+}
+export default UserPosts

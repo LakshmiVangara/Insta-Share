@@ -1,28 +1,28 @@
-import {BsGrid3X3} from 'react-icons/bs';
+import {BsGrid3X3} from 'react-icons/bs'
 
-import './index.css';
-import UserPosts from '../UserPosts';
-import SearchContext from '../../SearchContext';
+import './index.css'
+import UserPosts from '../UserPosts'
+import SearchContext from '../../SearchContext'
 
 const ProfileCard = props => {
-  const {profile, my} = props;
+  const {profile, my} = props
 
   return (
     <SearchContext.Consumer>
       {value => {
-        const {isDark} = value;
+        const {isDark} = value
 
-        const profileName = isDark ? 'names texts2' : 'names texts';
+        const profileName = isDark ? 'names texts2' : 'names texts'
         const followCount = isDark
           ? 'follow-count texts2'
-          : 'follow-count texts';
+          : 'follow-count texts'
         const followSub = isDark
           ? 'follow-count texts2 count'
-          : 'follow-count texts count';
-        const bioName = isDark ? 'bio-name texts2' : 'bio-name texts';
-        const bio = isDark ? 'bio texts2' : 'bio texts';
-        const gridIcon = isDark ? 'grid-icon texts2' : 'grid-icon texts';
-        const postHead = isDark ? 'post-head texts2' : 'post-head texts';
+          : 'follow-count texts count'
+        const bioName = isDark ? 'bio-name texts2' : 'bio-name texts'
+        const bio = isDark ? 'bio texts2' : 'bio texts'
+        const gridIcon = isDark ? 'grid-icon texts2' : 'grid-icon texts'
+        const postHead = isDark ? 'post-head texts2' : 'post-head texts'
 
         const {
           id,
@@ -35,7 +35,7 @@ const ProfileCard = props => {
           userBio,
           posts,
           stories,
-        } = profile;
+        } = profile
 
         return (
           <li className="profile-info-container" key={id}>
@@ -113,9 +113,9 @@ const ProfileCard = props => {
               <UserPosts posts={posts} my={my} />
             </div>
           </li>
-        );
+        )
       }}
     </SearchContext.Consumer>
-  );
-};
-export default ProfileCard;
+  )
+}
+export default ProfileCard

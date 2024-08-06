@@ -1,65 +1,65 @@
-import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { FaSearch, FaMoon } from 'react-icons/fa';
-import { RiSunFill } from 'react-icons/ri';
-import { AiOutlineMenu, AiFillCloseCircle } from 'react-icons/ai';
-import './index.css';
-import SearchContext from '../../SearchContext';
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import { FaSearch, FaMoon } from 'react-icons/fa'
+import { RiSunFill } from 'react-icons/ri'
+import { AiOutlineMenu, AiFillCloseCircle } from 'react-icons/ai'
+import './index.css'
+import SearchContext from '../../SearchContext'
 
 const Header = () => {
-  const [showHamburger, setShowHamburger] = useState(false);
-  const [isSearch, setIsSearch] = useState(false);
-  const [homeClick, setHomeClick] = useState(false);
+  const [showHamburger, setShowHamburger] = useState(false)
+  const [isSearch, setIsSearch] = useState(false)
+  const [homeClick, setHomeClick] = useState(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {
     changeSearchInput,
     enterSearchButton,
     clickSearchButton,
     isDark,
     changeTheme,
-  } = useContext(SearchContext);
+  } = useContext(SearchContext)
 
   const clickLogout = () => {
-    Cookies.remove('jwt_token');
-    navigate('/login');
-  };
+    Cookies.remove('jwt_token')
+    navigate('/login')
+  }
 
   const menuList = () => {
-    setShowHamburger(prev => !prev);
-    setIsSearch(false);
-  };
+    setShowHamburger(prev => !prev)
+    setIsSearch(false)
+  }
 
   const showSearchBar = () => {
-    setIsSearch(prev => !prev);
-    setShowHamburger(prev => !prev);
-  };
+    setIsSearch(prev => !prev)
+    setShowHamburger(prev => !prev)
+  }
 
   const onHomeClick = () => {
-    setHomeClick(prev => !prev);
-  };
+    setHomeClick(prev => !prev)
+  }
 
   const searchResult = (event) => {
-    changeSearchInput(event.target.value);
-  };
+    changeSearchInput(event.target.value)
+  }
 
   const enterSearch = (event) => {
     if (event.key === 'Enter') {
-      enterSearchButton();
+      enterSearchButton()
     }
-  };
+  }
 
   const clickSearchResult = () => {
-    clickSearchButton();
-  };
+    clickSearchButton()
+  }
 
-  const navHeader = isDark ? 'nav-header nav-head' : 'nav-header';
-  const navHeading = isDark ? 'web-heading web-heading2' : 'web-heading';
-  const navSearch = isDark ? 'nav-search nav-search2' : 'nav-search';
-  const menuIcon = isDark ? 'menu-icon theme' : 'menu-icon';
-  const closeIcon = isDark ? 'close-icon theme' : 'close-icon';
-  const home = homeClick ? 'search' : 'search text2';
+  const navHeader = isDark ? 'nav-header nav-head' : 'nav-header'
+  const navHeading = isDark ? 'web-heading web-heading2' : 'web-heading'
+  const navSearch = isDark ? 'nav-search nav-search2' : 'nav-search'
+  const menuIcon = isDark ? 'menu-icon theme' : 'menu-icon'
+  const closeIcon = isDark ? 'close-icon theme' : 'close-icon'
+  const home = homeClick ? 'search' : 'search text2'
 
   return (
     <nav className={navHeader}>
@@ -244,7 +244,7 @@ const Header = () => {
         )}
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
